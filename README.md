@@ -70,14 +70,30 @@ To learn how to perform advanced queries in SurrealDB, you should refer to the [
 #### Example #1: Filter by Difficulty
 
 ```sql
-SELECT slug, minDifficulty FROM problem WHERE minDifficulty > 9.3;
+SELECT slug, minDifficulty FROM problem WHERE minDifficulty > 9.3 LIMIT 5;
 ```
 
 ```json
 "result": [
   {
+    "minDifficulty": "9.6",
+    "slug": "connectdots"
+  },
+  {
+    "minDifficulty": "9.6",
+    "slug": "magicalmysteryknight"
+  },
+  {
+    "minDifficulty": "9.5",
+    "slug": "cameramakers"
+  },
+  {
     "minDifficulty": "9.4",
-    "slug": "harvard"
+    "slug": "textprocessor"
+  },
+  {
+    "minDifficulty": "9.4",
+    "slug": "callacab"
   }
 ]
 ```
