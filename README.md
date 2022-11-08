@@ -152,5 +152,5 @@ More subdomains can easily be added by modifying the source code.
 ## Tools Used
 
 * Node
-* Javascript
+* TypeScript
 * SurrealDB
