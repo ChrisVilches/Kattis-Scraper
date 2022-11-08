@@ -1,0 +1,25 @@
+{
+  "name": "kattis-scraper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "csv": "^6.2.1",
+    "csv-stringify": "^6.2.0",
+    "node-fetch-cache": "^3.0.5",
+    "surrealdb.js": "^0.5.0"
+  },
+  "scripts": {
+    "lint": "standard --fix",
+    "csv": "node src/index.js csv",
+    "surrealdb": "node src/index.js surrealdb",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "standard": "^17.0.0"
+  }
+}
