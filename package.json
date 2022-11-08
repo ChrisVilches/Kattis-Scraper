@@ -4,11 +4,9 @@
   "description": "",
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
-    "csv": "^6.2.1",
     "csv-stringify": "^6.2.0",
     "node-fetch-cache": "^3.0.5",
     "surrealdb.js": "^0.5.0",
-    "ts-standard": "^12.0.1",
     "tsx": "^3.11.0",
     "typescript": "^4.8.4"
   },
@@ -21,6 +19,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^18.11.9"
+    "@types/node": "^18.11.9",
+    "ts-standard": "^12.0.1"
   }
 }
