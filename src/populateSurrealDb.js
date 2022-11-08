@@ -3,8 +3,8 @@ import Surreal from 'surrealdb.js'
 const ENV_SURREAL_HOST = 'SURREALDB_HOST'
 const ENV_SURREAL_USER = 'SURREALDB_USER'
 const ENV_SURREAL_PASS = 'SURREALDB_PASS'
-
 const SURREALDB_HOST_DEFAULT = 'http://127.0.0.1:8000'
+const PROBLEM_TABLENAME = 'problem'
 
 const populateAux = async (db, rows) => {
   console.log(`Logging in with env variables ${ENV_SURREAL_USER} and ${ENV_SURREAL_PASS}`)
@@ -15,7 +15,7 @@ const populateAux = async (db, rows) => {
   await db.use('kattis', 'kattis')
 
   for (const row of rows) {
-    await db.create('problem', row)
+    await db.create(PROBLEM_TABLENAME, row)
   }
 }
 

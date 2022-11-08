@@ -10,25 +10,20 @@ const getAllProblemSlugs = html => {
   return [...new Set(allSlugs)]
 }
 
-// TODO: I think it'd be nice to add a mechanism to detect that the page was loaded correctly,
-//       and I didn't get a message error like "not allowed because it's scraping". So add a check.
-
 const getAllSlugsInPage = async (subdomain, page) => {
   const listPageUrl = `https://${subdomain}.kattis.com/problems?page=${page}&order=-difficulty_category`
   console.log(listPageUrl)
   const html = await getHtml(listPageUrl)
-  const allSlugs = getAllProblemSlugs(html)
-
-  return allSlugs
+  return getAllProblemSlugs(html)
 }
 
-const collectData = async (subdomain, maxPage) => {
+const collectData = async subdomain => {
   const allRows = []
 
-  for (let i = 0; i <= maxPage; i++) {
+  for (let i = 0; ; i++) {
     const slugs = await getAllSlugsInPage(subdomain, i)
 
-    if (slugs.length === 0) continue
+    if (slugs.length === 0) break
 
     for (const slug of slugs) {
       const { minDifficulty, maxDifficulty, timeLimit, problemStatement } = await scrapeProblem(subdomain, slug)
@@ -41,7 +36,6 @@ const collectData = async (subdomain, maxPage) => {
         maxDifficulty,
         timeLimit
       })
-      // await sleep(500)
     }
   }
 
@@ -57,9 +51,8 @@ const main = async () => {
     throw new Error(`Output type "${outputType}" is not allowed (must be ${ALLOWED_OUTPUT_TYPES.join(', ')})`)
   }
 
-  // TODO: The maxPage parameter should be empty, and the collecting should stop when there's an empty page.
-  const icpc = await collectData('icpc', 3)
-  const open = await collectData('open', 37)
+  const icpc = await collectData('icpc')
+  const open = await collectData('open')
 
   const allRows = [...icpc, ...open]
 

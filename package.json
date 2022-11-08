@@ -15,7 +15,7 @@
     "lint": "standard --fix",
     "csv": "node src/index.js csv",
     "surrealdb": "node src/index.js surrealdb",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test"
   },
   "author": "",
   "license": "ISC",
