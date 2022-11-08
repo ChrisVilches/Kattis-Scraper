@@ -21,7 +21,7 @@ const getDifficultyString = $ => $.find(KATTIS_PROBLEM_DIFFICULTY_SELECTOR).text
  * Checks whether the full problem statement (including metadata) is valid, i.e. it contains time limit and other data.
  * This function should be used to check that the page was scraped correctly.
  */
-const problemStatementHasEssentialMetaData = problemStatement => problemStatement.includes('CPU Time limit') && problemStatement.includes('Memory limit')
+const statementHasEssentialMetaData = statement => statement.includes('CPU Time limit') && statement.includes('Memory limit')
 
 /**
  * Attempts to remove some of the information and leave only the problem statement description.
@@ -39,15 +39,15 @@ export const scrapeProblem = async (subdomain, slug) => {
 
   const $ = load(pageHtml)
 
-  const fullProblemStatement = strip($(KATTIS_PROBLEM_STATEMENT_SELECTOR).text())
-  const cleanProblemStatement = heuristicCleanStatement($(KATTIS_PROBLEM_STATEMENT_SELECTOR))
+  const fullStatement = strip($(KATTIS_PROBLEM_STATEMENT_SELECTOR).text())
+  const cleanStatement = heuristicCleanStatement($(KATTIS_PROBLEM_STATEMENT_SELECTOR))
 
   try {
     const timeLimit = parseTimeLimit($('.attribute_list-item').first().find('span').last().text())
 
     const difficulty = parseRange(getDifficultyString($(KATTIS_PROBLEM_STATEMENT_SELECTOR)))
 
-    if (!problemStatementHasEssentialMetaData(fullProblemStatement)) {
+    if (!statementHasEssentialMetaData(fullStatement)) {
       throw new Error(`Problem "${slug}" was not loaded correctly`)
     }
 
@@ -56,7 +56,7 @@ export const scrapeProblem = async (subdomain, slug) => {
       minDifficulty: difficulty.min,
       maxDifficulty: difficulty.max,
       timeLimit,
-      problemStatement: cleanProblemStatement
+      statement: cleanStatement
     }
   } catch (e) {
     console.error(`Error found in problem "${slug}"`)

@@ -86,9 +86,9 @@ SELECT slug, minDifficulty FROM problem WHERE minDifficulty > 9.3;
 
 ```sql
 SELECT subdomain, slug FROM problem
-WHERE problemStatement CONTAINS "coordinate"
-AND problemStatement CONTAINS "distance"
-AND problemStatement CONTAINS "polygon"
+WHERE statement CONTAINS "coordinate"
+AND statement CONTAINS "distance"
+AND statement CONTAINS "polygon"
 LIMIT 4;
 ```
 

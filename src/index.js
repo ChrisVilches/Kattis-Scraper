@@ -26,10 +26,10 @@ const collectData = async subdomain => {
     if (slugs.length === 0) break
 
     for (const slug of slugs) {
-      const { minDifficulty, maxDifficulty, timeLimit, problemStatement } = await scrapeProblem(subdomain, slug)
+      const { minDifficulty, maxDifficulty, timeLimit, statement } = await scrapeProblem(subdomain, slug)
 
       allRows.push({
-        problemStatement,
+        statement,
         subdomain,
         slug,
         minDifficulty,
