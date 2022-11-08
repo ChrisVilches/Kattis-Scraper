@@ -117,6 +117,27 @@ LIMIT 4;
 
 *Under construction. At the moment of writing, full text search is not currently supported by SurrealDB.*
 
+#### Example #4: Count Amount of Scraped Problems
+
+```sql
+SELECT subdomain, count(subdomain) AS total
+FROM problem
+GROUP BY subdomain;
+```
+
+```json
+"result": [
+  {
+    "subdomain": "icpc",
+    "total": 112
+  },
+  {
+    "subdomain": "open",
+    "total": 3551
+  }
+]
+```
+
 ## Subdomains
 
 Currently the problems are downloaded from the following URL scopes:
