@@ -30,9 +30,10 @@ export const populateSurrealDb = async (rows: Problem[]): Promise<void> => {
 
   try {
     await populateAux(db, rows)
-    db.close()
   } catch (e) {
     console.error('SurrealDB error found')
     throw e
+  } finally {
+    db.close()
   }
 }
