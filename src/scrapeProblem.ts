@@ -4,5 +4,10 @@ import { Problem } from './Problem'
 export const scrapeProblem = async (subdomain: string, slug: string): Promise<Problem> => {
   const pageHtml = await getHtml(`https://${subdomain}.kattis.com/problems/${slug}`)
 
-  return Problem.fromHtml(subdomain, slug, pageHtml)
+  try {
+    return Problem.fromHtml(subdomain, slug, pageHtml)
+  } catch (e) {
+    console.error(`Error found in problem "${slug}"`)
+    throw e
+  }
 }

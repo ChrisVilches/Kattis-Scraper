@@ -1,4 +1,5 @@
-import { AnyNode, Cheerio } from 'cheerio'
+import { AnyNode, Cheerio, load } from 'cheerio'
+import { strip } from './strip'
 const TIMELIMIT_REGEX = /^\s*([0-9]+)\s+seconds?\s*$/i
 const KATTIS_PROBLEM_DIFFICULTY_SELECTOR = '.difficulty_number'
 
@@ -39,3 +40,14 @@ export const getDifficultyString = ($: Cheerio<AnyNode>): string => $.find(KATTI
  * This function should be used to check that the page was scraped correctly.
  */
 export const statementHasEssentialMetaData = (statement: string): boolean => statement.includes('CPU Time limit') && statement.includes('Memory limit')
+
+/**
+ * Attempts to remove some of the information and leave only the problem statement description.
+ */
+export const heuristicCleanStatement = ($: Cheerio<AnyNode>): string => {
+  const $container = load($.html() as string)
+  $container('#instructions-close').remove()
+  $container('.attribute_list-item').remove()
+
+  return strip($container.text())
+}
