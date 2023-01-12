@@ -3,6 +3,7 @@ import { getHtml } from './getHtml'
 import { writeCsv } from './writeCsv'
 import { populateSurrealDb } from './populateSurrealDb'
 import { Problem } from './Problem'
+import { problemDebugPreview } from './problemUtil'
 
 const PROBLEM_LINK_REGEX = /"\/problems\/([a-zA-Z0-9-_]+)"/g
 
@@ -13,7 +14,7 @@ const getAllProblemSlugs = (html: string): string[] => {
 
 const getAllSlugsInPage = async (subdomain: string, page: number): Promise<string[]> => {
   const listPageUrl = `https://${subdomain}.kattis.com/problems?page=${page}&order=-difficulty_category`
-  console.log(listPageUrl)
+  console.log(`Page: ${listPageUrl}`)
   const html = await getHtml(listPageUrl)
   return getAllProblemSlugs(html)
 }
@@ -27,7 +28,9 @@ const collectData = async (subdomain: string): Promise<Problem[]> => {
     if (slugs.length === 0) break
 
     for (const slug of slugs) {
-      allProblems.push(await scrapeProblem(subdomain, slug))
+      const problem: Problem = await scrapeProblem(subdomain, slug)
+      console.log(allProblems.length, problemDebugPreview(problem))
+      allProblems.push(problem)
     }
   }
 

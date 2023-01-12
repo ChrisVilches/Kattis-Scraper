@@ -1,8 +1,5 @@
-import { strip } from './strip'
 import { load } from 'cheerio'
 import { parseRange, getDifficultyString, parseTimeLimit, statementHasEssentialMetaData, heuristicCleanStatement } from './problemUtil'
-
-const KATTIS_PROBLEM_STATEMENT_SELECTOR = '#instructions-container'
 
 export class Problem {
   statement: string = ''
@@ -17,18 +14,16 @@ export class Problem {
 
     const problem = new Problem()
 
-    const fullStatement = strip($(KATTIS_PROBLEM_STATEMENT_SELECTOR).text())
+    const difficulty = parseRange(getDifficultyString($('main')))
 
-    const difficulty = parseRange(getDifficultyString($(KATTIS_PROBLEM_STATEMENT_SELECTOR)))
-
-    if (!statementHasEssentialMetaData(fullStatement)) {
+    if (!statementHasEssentialMetaData($('.metadata_list').first().text())) {
       throw new Error(`Problem "${slug}" was not loaded correctly`)
     }
 
-    problem.statement = heuristicCleanStatement($(KATTIS_PROBLEM_STATEMENT_SELECTOR))
+    problem.statement = heuristicCleanStatement($('#instructions-container'))
     problem.subdomain = subdomain
     problem.slug = slug
-    problem.timeLimit = parseTimeLimit($('.attribute_list-item').first().find('span').last().text())
+    problem.timeLimit = parseTimeLimit($('.metadata_list-item').first().find('span').last().text())
     problem.minDifficulty = difficulty.min
     problem.maxDifficulty = difficulty.max
 

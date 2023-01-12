@@ -1,4 +1,5 @@
 import { AnyNode, Cheerio, load } from 'cheerio'
+import { Problem } from './Problem'
 import { strip } from './strip'
 const TIMELIMIT_REGEX = /^\s*([0-9]+)\s+seconds?\s*$/i
 const KATTIS_PROBLEM_DIFFICULTY_SELECTOR = '.difficulty_number'
@@ -50,4 +51,9 @@ export const heuristicCleanStatement = ($: Cheerio<AnyNode>): string => {
   $container('.attribute_list-item').remove()
 
   return strip($container.text())
+}
+
+export const problemDebugPreview = (problem: Problem): string => {
+  const contentPreview = `${problem.statement.substring(0, 20)}...${problem.statement.substring(problem.statement.length - 20, Infinity)}`.replace(/\n/g, ' ')
+  return `${problem.subdomain}/${problem.slug}\t\t${problem.timeLimit} seconds\t\tDifficulty ${problem.minDifficulty} - ${problem.maxDifficulty}\t\t${contentPreview}`
 }
