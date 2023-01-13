@@ -1,8 +1,10 @@
 import { AnyNode, Cheerio, load } from 'cheerio'
 import { Problem } from './Problem'
 import { strip } from './strip'
-const TIMELIMIT_REGEX = /^\s*([0-9]+)\s+seconds?\s*$/i
-const KATTIS_PROBLEM_DIFFICULTY_SELECTOR = '.difficulty_number'
+
+const TIMELIMIT_REGEX = /.*CPU Time limit\s+([0-9]+)\s+seconds?.*/
+const DIFFICULTY_REGEX_ONE = /.*Difficulty\s+([0-9]+\.[0-9]+).*/
+const DIFFICULTY_REGEX_TWO = /.*Difficulty\s+([0-9]+\.[0-9]+\s*-\s*[0-9]+\.[0-9]+).*/
 
 interface Range {
   min: number
@@ -28,19 +30,21 @@ export const parseTimeLimit = (str: string): number => {
   const match = str.match(TIMELIMIT_REGEX)
 
   if (match === null) {
-    throw new Error('Timelimit string has an unexpected format')
+    throw new Error("Couldn't parse timelimit")
   }
 
   return Number(match[1])
 }
 
-export const getDifficultyString = ($: Cheerio<AnyNode>): string => $.find(KATTIS_PROBLEM_DIFFICULTY_SELECTOR).text().trim()
+export const getDifficultyString = (str: string): string => {
+  const match = str.match(DIFFICULTY_REGEX_TWO)?.at(1) ?? str.match(DIFFICULTY_REGEX_ONE)?.at(1) ?? ''
 
-/**
- * Checks whether the full problem statement (including metadata) is valid, i.e. it contains time limit and other data.
- * This function should be used to check that the page was scraped correctly.
- */
-export const statementHasEssentialMetaData = (statement: string): boolean => statement.includes('CPU Time limit') && statement.includes('Memory limit')
+  if (match === '') {
+    throw new Error("Couldn't parse difficulty")
+  }
+
+  return match
+}
 
 /**
  * Attempts to remove some of the information and leave only the problem statement description.

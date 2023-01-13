@@ -1,5 +1,5 @@
 import { load } from 'cheerio'
-import { parseRange, getDifficultyString, parseTimeLimit, statementHasEssentialMetaData, heuristicCleanStatement } from './problemUtil'
+import { parseRange, getDifficultyString, parseTimeLimit, heuristicCleanStatement } from './problemUtil'
 
 export class Problem {
   statement: string = ''
@@ -11,21 +11,19 @@ export class Problem {
 
   static fromHtml (subdomain: string, slug: string, html: string): Problem {
     const $ = load(html)
+    const fullText: string = $.text()
 
     const problem = new Problem()
 
-    const difficulty = parseRange(getDifficultyString($('main')))
-
-    if (!statementHasEssentialMetaData($('.metadata_list').first().text())) {
-      throw new Error(`Problem "${slug}" was not loaded correctly`)
-    }
+    const difficultyString: string = getDifficultyString(fullText)
+    const difficultyRange = parseRange(difficultyString)
 
     problem.statement = heuristicCleanStatement($('#instructions-container'))
     problem.subdomain = subdomain
     problem.slug = slug
-    problem.timeLimit = parseTimeLimit($('.metadata_list-item').first().find('span').last().text())
-    problem.minDifficulty = difficulty.min
-    problem.maxDifficulty = difficulty.max
+    problem.timeLimit = parseTimeLimit(fullText)
+    problem.minDifficulty = difficultyRange.min
+    problem.maxDifficulty = difficultyRange.max
 
     return problem
   }
