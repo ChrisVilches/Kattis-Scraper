@@ -13,7 +13,7 @@ const getAllProblemSlugs = (html: string): string[] => {
 }
 
 const getAllSlugsInPage = async (subdomain: string, page: number): Promise<string[]> => {
-  const listPageUrl = `https://${subdomain}.kattis.com/problems?page=${page}&order=-difficulty_category`
+  const listPageUrl = `https://${subdomain}.kattis.com/problems?page=${page}&order=-difficulty_data`
   console.log(`Page: ${listPageUrl}`)
   const html = await getHtml(listPageUrl)
   return getAllProblemSlugs(html)

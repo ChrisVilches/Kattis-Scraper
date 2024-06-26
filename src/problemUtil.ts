@@ -2,9 +2,9 @@ import { AnyNode, Cheerio, load } from 'cheerio'
 import { Problem } from './Problem'
 import { strip } from './strip'
 
-const TIMELIMIT_REGEX = /.*CPU Time limit\s+([0-9]+)\s+seconds?.*/
-const DIFFICULTY_REGEX_ONE = /.*Difficulty\s+([0-9]+\.[0-9]+).*/
-const DIFFICULTY_REGEX_TWO = /.*Difficulty\s+([0-9]+\.[0-9]+\s*-\s*[0-9]+\.[0-9]+).*/
+const TIMELIMIT_REGEX = /.*CPU Time limit\s*([0-9]+)\s+seconds?.*/
+const DIFFICULTY_REGEX_ONE = /([0-9]+\.[0-9]+)\s*Difficulty/
+const DIFFICULTY_REGEX_TWO = /([0-9]+\.[0-9]+\s*-\s*[0-9]+\.[0-9]+)\s*Difficulty/
 
 interface Range {
   min: number
